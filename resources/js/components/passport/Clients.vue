@@ -229,6 +229,7 @@
 
 <script>
     export default {
+        name: 'Clients',
         /*
          * The component's data.
          */

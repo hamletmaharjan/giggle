@@ -156,6 +156,7 @@
 
 <script>
     export default {
+        name: 'PersonalAccessTokens'
         /*
          * The component's data.
          */

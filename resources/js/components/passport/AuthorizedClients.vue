@@ -52,6 +52,8 @@
 
 <script>
     export default {
+
+        name: 'AuthorizedClients',
         /*
          * The component's data.
          */

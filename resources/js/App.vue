@@ -1,13 +1,15 @@
 <template>
-    <h1>
-    Laravel
-    </h1>
+    <Clients></Clients>
 </template>
 
 
 <script>
+import Clients from './components/passport/Clients.vue';
 export default {
-    name: 'App'
+    name: 'App',
+    components: {
+        Clients
+    }
 }
 </script>
 
