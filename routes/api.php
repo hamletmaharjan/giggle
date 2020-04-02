@@ -25,3 +25,12 @@ Route::group(['prefix' => 'auth'],function(){
     Route::get('/logout','AuthController@logout')->middleware('auth:api');
     Route::get('/user','AuthController@user')->middleware('auth:api');
 });
+
+Route::group(['middleware'=>'auth:api'],function(){
+    Route::get('/articles','API\ArticleController@index');
+    Route::post('/articles','API\ArticleController@store');
+    Route::get('/articles/{article}','API\ArticleController@show');
+    Route::put('/articles/{article}','API\ArticleController@update');
+    Route::delete('/articles/{article}','API\ArticleController@destroy');
+});
+
