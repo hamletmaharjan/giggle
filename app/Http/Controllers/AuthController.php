@@ -47,15 +47,20 @@ class AuthController extends Controller
             'remember_me' => 'boolean'
         ]);
         $credentials = request(['email', 'password']);
-        if(!Auth::attempt($credentials))
+        if(!Auth::attempt($credentials)){
             return response()->json([
-                'message' => 'Unauthorized'
+                'message' => 'Login Failed'
             ], 401);
-        $user = $request->user();
+        }
+            
+        
+
+        $user =  Auth::user();
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
-        if ($request->remember_me)
+        if($request->remember_me){
             $token->expires_at = Carbon::now()->addWeeks(1);
+        }
         $token->save();
         return response()->json([
             'access_token' => $tokenResult->accessToken,
@@ -64,6 +69,21 @@ class AuthController extends Controller
                 $tokenResult->token->expires_at
             )->toDateTimeString()
         ]);
+
+
+        // $user = $request->user();
+        // $tokenResult = $user->createToken('Personal Access Token');
+        // $token = $tokenResult->token;
+        // if ($request->remember_me)
+        //     $token->expires_at = Carbon::now()->addWeeks(1);
+        // $token->save();
+        // return response()->json([
+        //     'access_token' => $tokenResult->accessToken,
+        //     'token_type' => 'Bearer',
+        //     'expires_at' => Carbon::parse(
+        //         $tokenResult->token->expires_at
+        //     )->toDateTimeString()
+        // ]);
     }
   
     /**

@@ -28,7 +28,7 @@ class AuthServiceProvider extends ServiceProvider
 
         Passport::routes();
         Passport::cookie('laravel_token');
-        Passport::tokensExpireIn(now()->addDays(15));
+        Passport::personalAccessTokensExpireIn(now()->addDays(1));
 
     }
 }
