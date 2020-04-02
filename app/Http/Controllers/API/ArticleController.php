@@ -7,10 +7,15 @@ use Illuminate\Http\Request;
 use App\Http\Resources\Article as ArticleResource;
 use App\Http\Resources\ArticleCollection;
 use Illuminate\Support\Facades\Auth;
+use App\Services\ImageServices;
 use App\Article;
 
 class ArticleController extends Controller
 {
+    protected $imageServices;
+    public function __construct(ImageServices $imageServices){
+        $this->imageServices = $imageServices;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -30,12 +35,17 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-       
+        
+        
         $id =  Auth::user()->id;
         $article = new Article();
         $article->title = $request['title'];
         $article->description = $request['description'];
-        $article->image = $request['image'];
+        if($request->hasFile('image')){
+            $image = $request->file('image');
+            $imageName = $this->imageServices->moveImageWithName($image);
+            $article->image = $imageName;
+        }
         $article->user_id = $id;
         $article->save();
         return response()->json([
@@ -83,10 +93,18 @@ class ArticleController extends Controller
     public function destroy($id)
     {
         $article = Article::find($id);
-        if($article->delete()){
+        if($this->imageServices->deleteArticle($article->image)){
+            if($article->delete()){
+                return response()->json([
+                    'message'=>'Deleted'
+                ]);
+            }
+        }
+        else{
             return response()->json([
-                'message'=>'Deleted'
+                'message'=>'Delete failed'
             ]);
         }
+        
     }
 }
