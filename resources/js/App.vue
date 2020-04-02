@@ -1,7 +1,9 @@
 <template>
     <div>
-        <Login v-on:loginData="login"></Login>
-        {{token}}
+        <AppHeader></AppHeader>
+        <div>
+            <router-view></router-view>
+        </div>
     </div>
     
 </template>
@@ -9,7 +11,7 @@
 
 <script>
 import axios from 'axios';
-import Login from './components/Login.vue';
+import AppHeader from './components/AppHeader.vue';
 export default {
     name: 'App',
     data() {
@@ -18,6 +20,7 @@ export default {
         }
     },
     components: {
+        AppHeader,
         Login
     },
     methods: {
@@ -58,7 +61,6 @@ export default {
             })
             .catch(error => console.log('error', error));
 
-            console.log(this.token);
         }
     }
 }
