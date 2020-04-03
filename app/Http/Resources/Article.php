@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Comment as CommentResource;
+use Illuminate\Support\Facades\Storage;
 
 class Article extends JsonResource
 {
@@ -20,7 +21,7 @@ class Article extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
-            'image' => $this->image,
+            'image' => Storage::url('public/articles/'.$this->image),
             'user_id' => $this->user_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

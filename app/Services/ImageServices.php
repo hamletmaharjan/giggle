@@ -13,7 +13,8 @@ class ImageServices{
 
 	public function moveImageWithName($data){
 		$imageName = time().'.'.$data->getClientOriginalExtension();
-		$data->move(public_path('/uploads/articles'),$imageName);
+        // $data->move(public_path('/uploads/articles'),$imageName);
+        $path = $data->storeAs('public/articles',$imageName);
 		return $imageName;
     }
     
