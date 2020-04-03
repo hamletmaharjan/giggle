@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services;
+use Illuminate\Support\Facades\Storage;
 use File;
 
 
@@ -19,10 +20,11 @@ class ImageServices{
     }
     
     public function deleteArticle($imageName){
-        $image_path = public_path()."/uploads/articles/".$imageName;  // Value is not URL but directory file path
-        if(File::exists($image_path)) {
-            File::delete($image_path);
-        }
+        //$image_path = public_path()."/uploads/articles/".$imageName;  // Value is not URL but directory file path
+        // if(File::exists($image_path)) {
+        //     File::delete($image_path);
+        // }
+        Storage::delete('public/articles/'.$imageName);
         return true;
     }
 }
