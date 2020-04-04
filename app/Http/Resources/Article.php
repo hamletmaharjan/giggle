@@ -25,7 +25,7 @@ class Article extends JsonResource
             'user_id' => $this->user_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'comments' => CommentResource::collection($this->comments),
+            'comments' => $this->comments->count(),
             'upvotes' => $this->upvotes->count(),
 
         ];
