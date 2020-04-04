@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Resources\Article as ArticleResource;
+use App\Http\Resources\ArticleDetail as ArticalDetailResource;
 use App\Http\Resources\ArticleCollection;
 use Illuminate\Support\Facades\Auth;
 use App\Services\ImageServices;
@@ -35,8 +36,8 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        
-        
+
+
         $id =  Auth::user()->id;
         $article = new Article();
         $article->title = $request['title'];
@@ -62,7 +63,7 @@ class ArticleController extends Controller
     public function show($id)
     {
         $article = Article::find($id);
-        return new ArticleResource($article);
+        return new ArticalDetailResource($article);
     }
 
     /**
@@ -105,6 +106,6 @@ class ArticleController extends Controller
                 'message'=>'Delete failed'
             ]);
         }
-        
+
     }
 }
