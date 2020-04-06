@@ -25,6 +25,7 @@ class ArticleDetail extends JsonResource
       return [
         'id' => $this->id,
         'title' => $this->title,
+        'op' => $this->user->name,
         'description' => $this->description,
         'image' => Storage::url('public/articles/'.$this->image),
         'user_id' => $this->user_id,
