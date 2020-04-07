@@ -6,6 +6,8 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Comment as CommentResource;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use App\Upvote;
 
 class Article extends JsonResource
 {
@@ -15,8 +17,26 @@ class Article extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
+
+
+     public function isUpvoted($upvoted){
+       if($upvoted){
+         return true;
+       }
+       else {
+         return false;
+       }
+     }
+
     public function toArray($request)
     {
+        $upvote = Upvote::where([
+          ['user_id','=',Auth::user()->id],
+          ['article_id','=',$this->id],
+        ])->first();
+
+
+
         return [
             'id' => $this->id,
             'title' => $this->title,
@@ -27,6 +47,7 @@ class Article extends JsonResource
             'updated_at' => $this->updated_at,
             'comments' => $this->comments->count(),
             'upvotes' => $this->upvotes->count(),
+            'is_upvoted' => self::isUpvoted($upvote),
 
         ];
     }
