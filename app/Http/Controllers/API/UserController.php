@@ -17,12 +17,12 @@ class UserController extends Controller
 
 
     public function show($username) {
-      $user = User::where('name','=',$username)->first();
+      $user = User::where('username','=',$username)->first();
       return response()->json($user);
     }
 
     public function articles($username) {
-      $user = User::where('name','=',$username)->first();
+      $user = User::where('username','=',$username)->first();
       $articles = $user->articles;
       return ArticleResource::collection($articles);
     }

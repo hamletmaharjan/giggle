@@ -13,7 +13,7 @@ class AuthController extends Controller
 {
     public function signup(Request $request)
     {
-      
+
         $request->validate([
             'name' => 'required|string',
             'email' => 'required|string|email|unique:users',
@@ -22,7 +22,11 @@ class AuthController extends Controller
         $user = new User([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => bcrypt($request->password)
+            'password' => bcrypt($request->password),
+            'username' => $request->username,
+            'gender'  => $request->gender,
+            'date_of_birth' => $request->date_of_birth,
+            'bio' => $request->bio
         ]);
         $user->save();
         return response()->json([
