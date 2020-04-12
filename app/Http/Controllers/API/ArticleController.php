@@ -8,6 +8,7 @@ use App\Http\Resources\Article as ArticleResource;
 use App\Http\Resources\ArticleDetail as ArticalDetailResource;
 use App\Http\Resources\ArticleCollection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\Services\ImageServices;
 use App\Article;
 
@@ -22,9 +23,24 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        if($request->has('type')){
+          if($request->type == 'mu'){
+            $articles = DB::table('upvotes')
+                              ->join('articles','upvotes.article_id','=','articles.id')
+                              ->select(DB::raw('count(upvotes.article_id) as upvotes'),'articles.*')
+                              ->groupBy('upvotes.article_id')
+                              ->orderByRaw('count(upvotes.article_id) desc')
+                              ->paginate(5);
+
+            return response()->json([
+              'data' => $articles
+            ]);
+          }
+        }
         //return Article::all();
+        // if($request->has('type')
         return new ArticleCollection(Article::paginate(5));
     }
 
@@ -107,6 +123,17 @@ class ArticleController extends Controller
             ]);
         }
 
+    }
+
+  public function mostUpvoted() {
+      $articles = DB::table('upvotes')
+                        ->join('articles','upvotes.article_id','=','articles.id')
+                        ->select(DB::raw('count(upvotes.article_id) as upvotes'),'articles.*')
+                        ->groupBy('upvotes.article_id')
+                        ->orderByRaw('count(upvotes.article_id) desc')
+                        ->get();
+
+      return $articles;
     }
 
 }
