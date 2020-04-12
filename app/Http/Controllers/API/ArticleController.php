@@ -34,9 +34,11 @@ class ArticleController extends Controller
                               ->orderByRaw('count(upvotes.article_id) desc')
                               ->paginate(5);
 
-            return response()->json([
-              'data' => $articles
-            ]);
+            return response()->json($articles);
+          }
+          elseif ($request->type == 'new') {
+            $articles = Article::orderBy('created_at','desc')->paginate(5);
+            return new ArticleCollection($articles);
           }
         }
         //return Article::all();

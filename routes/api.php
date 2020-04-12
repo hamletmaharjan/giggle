@@ -39,7 +39,7 @@ Route::group(['middleware'=>'auth:api'],function(){
 
 
     Route::get('/articles','API\ArticleController@index');
-    Route::get('/articles?type=mu','API\ArticleController@mostUpvoted');
+    //Route::get('/articles?type=mu','API\ArticleController@mostUpvoted');
     Route::post('/articles','API\ArticleController@store');
     Route::get('/articles/{article}','API\ArticleController@show');
     Route::put('/articles/{article}','API\ArticleController@update');
