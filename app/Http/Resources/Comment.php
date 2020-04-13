@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 class Comment extends JsonResource
 {
@@ -20,6 +21,7 @@ class Comment extends JsonResource
             'user' => $this->user->name,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'is_self' => ($this->user->id == Auth::user()->id)? true : false,
         ];
     }
 }

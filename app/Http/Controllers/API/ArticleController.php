@@ -27,14 +27,27 @@ class ArticleController extends Controller
     {
         if($request->has('type')){
           if($request->type == 'mu'){
-            $articles = DB::table('upvotes')
-                              ->join('articles','upvotes.article_id','=','articles.id')
-                              ->select(DB::raw('count(upvotes.article_id) as upvotes'),'articles.*')
-                              ->groupBy('upvotes.article_id')
-                              ->orderByRaw('count(upvotes.article_id) desc')
-                              ->paginate(5);
+            // $articles = DB::table('upvotes')
+            //                   ->join('articles','upvotes.article_id','=','articles.id')
+            //                   ->select(DB::raw('count(upvotes.article_id) as upvotes'),'articles.*')
+            //                   ->groupBy('upvotes.article_id')
+            //                   ->orderByRaw('count(upvotes.article_id) desc')
+            //                   ->paginate(5);
 
-            return response()->json($articles);
+            // $articles = DB::table('articles')
+            //                 ->join('upvotes','upvotes.article_id','=','articles.id')
+            //                 ->join('comments','comments.article_id','=','articles.id')
+            //                 ->select(DB::raw('count(upvotes.article_id) as upvotes'),'articles.*')
+            //                 ->groupBy('upvotes.article_id')
+            //                 ->orderByRaw('count(upvotes.article_id) desc')
+            //                 ->get();
+            $articles = Article::withCount('comments','upvotes')->orderBy('upvotes_count','desc')->paginate(5);
+
+            // foreach ($articles as $article) {
+            //     echo $article->comments_count;
+            // }
+            return new ArticleCollection($articles);
+
           }
           elseif ($request->type == 'new') {
             $articles = Article::orderBy('created_at','desc')->paginate(5);

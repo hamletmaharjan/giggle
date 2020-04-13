@@ -48,6 +48,7 @@ class Article extends JsonResource
             'comments' => $this->comments->count(),
             'upvotes' => $this->upvotes->count(),
             'is_upvoted' => self::isUpvoted($upvote),
+            'is_self' => ($this->user->id == Auth::user()->id)? true : false,
 
         ];
     }
