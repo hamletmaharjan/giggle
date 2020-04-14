@@ -106,14 +106,32 @@ class ArticleController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $user = Auth::user();
         $article = Article::find($id);
-        $article->title = $request['title'];
-        $article->description = $request['description'];
-        $article->image = $request['image'];
-        $article->save();
-        return response()->json([
-            'message'=>'success'
-        ]);
+        if($user->can('update',$article)){
+          if($request->has('title')){
+            $article->title = $request['title'];
+          }
+          if($request->has('description')){
+            $article->description = $request['description'];
+          }
+          if($request->hasFile('image')){
+                $image = $request->file('image');
+                $imageName = $this->imageServices->moveImageWithName($image);
+                $article->image = $imageName;
+          }
+          $article->save();
+          return response()->json([
+              'message'=>'success'
+          ]);
+        }
+        else {
+          return response()->json([
+            'message'=>'Unauthorized'
+          ]);
+        }
+
+
     }
 
     /**
@@ -125,18 +143,27 @@ class ArticleController extends Controller
     public function destroy($id)
     {
         $article = Article::find($id);
-        if($this->imageServices->deleteArticle($article->image)){
-            if($article->delete()){
-                return response()->json([
-                    'message'=>'Deleted'
-                ]);
-            }
+        $user = Auth::user();
+        if($user->can('delete',$article)){
+          if($this->imageServices->deleteArticle($article->image)){
+              if($article->delete()){
+                  return response()->json([
+                      'message'=>'Deleted'
+                  ]);
+              }
+          }
+          else{
+              return response()->json([
+                  'message'=>'Delete failed'
+              ]);
+          }
         }
-        else{
-            return response()->json([
-                'message'=>'Delete failed'
-            ]);
+        else {
+          return response()->json([
+            'message' => 'Unauthorized'
+          ]);
         }
+
 
     }
 
