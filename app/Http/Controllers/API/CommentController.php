@@ -26,12 +26,42 @@ class CommentController extends Controller
       ]);
     }
 
+    public function show($id) {
+      $comment = Comment::findOrFail($id);
+      return new CommentResource($comment);
+    }
+
+
 
     public function update(Request $request,$id) {
-
+      $comment = Comment::findOrFail($id);
+      $user = Auth::user();
+      if($user->can('update',$comment)) {
+        $comment->comment = $request['comment'];
+        $comment->save();
+        return response()->json([
+            'message'=>'success'
+        ]);
+      }
+      else {
+        return response()->json([
+            'message'=>'Unauthorized'
+        ]);
+      }
     }
 
     public function delete($id) {
-
+      $comment = Comment::findOrFail($id);
+      $user = Auth::user();
+      if($user->can('delete',$comment)) {
+        return response()->json([
+            'message'=>'Comment Deleted'
+        ]);
+      }
+      else {
+        return response()->json([
+            'message'=>'Unauthorized to delete comment'
+        ]);
+      }
     }
 }

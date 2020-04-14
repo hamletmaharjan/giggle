@@ -47,6 +47,9 @@ Route::group(['middleware'=>'auth:api'],function(){
 
     Route::get('/articles/{article}/comments','API\CommentController@index');
     Route::post('/articles/{article}/comments','API\CommentController@store');
+    Route::get('/comments/{comment}','API\CommentController@show');
+    Route::put('/comments/{comment}','API\CommentController@update');
+    Route::delete('/comments/{comment}','API\CommentController@destroy');
 
 //To be organized
     Route::post('/article/upvote','API\UpvoteController@upvote');

@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Gate;
 use Laravel\Passport\Passport;
 use App\Article;
 use App\Policies\ArticlePolicy;
+use App\Comment;
+use App\Policies\CommentPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -18,6 +20,7 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         // 'App\Model' => 'App\Policies\ModelPolicy',
         Article::class => ArticlePolicy::class,
+        Comment::class => CommentPolicy::class,
     ];
 
     /**

@@ -7,10 +7,12 @@ use Illuminate\Http\Request;
 use App\Http\Resources\Article as ArticleResource;
 use App\Http\Resources\ArticleDetail as ArticalDetailResource;
 use App\Http\Resources\ArticleCollection;
+use App\Http\Resources\Comment as CommentResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Services\ImageServices;
 use App\Article;
+use App\Comment;
 
 class ArticleController extends Controller
 {
@@ -176,6 +178,22 @@ class ArticleController extends Controller
                         ->get();
 
       return $articles;
+    }
+
+    public function getComments($id) {
+      $comments = Comment::where('article_id','=',$id)->get();
+      return CommentResource::collection($comments);
+    }
+
+    public function storeComment($id) {
+      $comment = new Comment();
+      $comment->comment = $request['comment'];
+      $comment->user_id = Auth::user()->id;
+      $comment->article_id = $id;
+      $comment->save();
+      return response()->json([
+          'message'=>'success'
+      ]);
     }
 
 }
