@@ -12,7 +12,7 @@ use Illuminate\Queue\SerializesModels;
 
 use App\Comment;
 
-class Commented
+class Commented implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -35,6 +35,14 @@ class Commented
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('channel-name');
+        return new PrivateChannel('comment.'.$this->comment->article_id);
+    }
+
+    public function broadcastWith()
+    {
+        return [
+          'id' => $this->comment->id,
+          'comment' => $this->comment->comment,
+        ];
     }
 }
