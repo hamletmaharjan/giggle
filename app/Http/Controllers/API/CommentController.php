@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\Comment as CommentResource;
+use App\Events\Commented;
 use App\Comment;
 
 class CommentController extends Controller
@@ -15,12 +16,14 @@ class CommentController extends Controller
       return CommentResource::collection($comments);
     }
 
+
     public function store(Request $request,$id) {
       $comment = new Comment();
       $comment->comment = $request['comment'];
       $comment->user_id = Auth::user()->id;
       $comment->article_id = $id;
       $comment->save();
+      event(new Commented($comment));
       return response()->json([
           'message'=>'success'
       ]);
@@ -50,10 +53,11 @@ class CommentController extends Controller
       }
     }
 
-    public function delete($id) {
+    public function destroy($id) {
       $comment = Comment::findOrFail($id);
       $user = Auth::user();
       if($user->can('delete',$comment)) {
+        $comment->delete();
         return response()->json([
             'message'=>'Comment Deleted'
         ]);
