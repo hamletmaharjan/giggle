@@ -26,6 +26,6 @@ class SendCommentedNotification
      */
     public function handle(Commented $event)
     {
-        dd($event);
+        //
     }
 }

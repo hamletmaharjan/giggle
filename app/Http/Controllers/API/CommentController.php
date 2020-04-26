@@ -23,10 +23,11 @@ class CommentController extends Controller
       $comment->user_id = Auth::user()->id;
       $comment->article_id = $id;
       $comment->save();
+      event(new Commented($comment));
       return response()->json([
           'message'=>'success'
       ]);
-      event(new Commented($comment));
+
 
     }
 

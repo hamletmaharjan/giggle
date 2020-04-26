@@ -35,7 +35,7 @@ class Commented implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('comment.'.$this->comment->article_id);
+        return new PrivateChannel('user.'.$this->comment->article->user->id);
     }
 
     public function broadcastWith()

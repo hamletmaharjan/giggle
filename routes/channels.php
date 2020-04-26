@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Broadcast;
+use App\Comment;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('comment.{articleId}', function ($user, $articleId) {
-    return  $user->id === Articles::findOrFail($articleId)->user_id;
+Broadcast::channel('user.{id}', function ($user, $id) {
+    //return true;
+    return (int) $user->id === (int) $id;
 });
