@@ -14,7 +14,11 @@
     </head>
     <body>
     <div id="app">
-        Welcome
+        Main
+
+        <div>
+            <router-view></router-view>
+        </div>
 
     </div>
     </body>
