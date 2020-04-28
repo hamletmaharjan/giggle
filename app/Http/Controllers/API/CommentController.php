@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\Comment as CommentResource;
 use App\Events\Commented;
+use App\Notifications\Commented as NotifiCommented;
 use App\Comment;
 
 class CommentController extends Controller
@@ -23,7 +24,8 @@ class CommentController extends Controller
       $comment->user_id = Auth::user()->id;
       $comment->article_id = $id;
       $comment->save();
-      event(new Commented($comment));
+      //event(new Commented($comment));
+      $comment->article->user->notify(new NotifiCommented($comment));
       return response()->json([
           'message'=>'success'
       ]);

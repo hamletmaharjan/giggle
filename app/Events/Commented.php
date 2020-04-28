@@ -43,6 +43,7 @@ class Commented implements ShouldBroadcast
         return [
           'id' => $this->comment->id,
           'comment' => $this->comment->comment,
+          'username' => $this->comment->user->username,
         ];
     }
 }
