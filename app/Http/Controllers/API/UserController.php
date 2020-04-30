@@ -26,4 +26,10 @@ class UserController extends Controller
       $articles = $user->articles;
       return ArticleResource::collection($articles);
     }
+
+    public function me()
+    {
+      $user = Auth::user();
+      return response()->json($user);
+    }
 }

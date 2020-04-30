@@ -31,6 +31,7 @@ Route::group(['prefix' => 'auth'],function(){
 Route::group(['middleware'=>'auth:api'],function(){
 
     Route::get('/logout','AuthController@logout');
+    Route::get('/me','API\UserController@me');
     Route::get('/users','API\UserController@index');
     Route::get('/users/{username}','API\UserController@show');
 // where to store the method and what should be method name
