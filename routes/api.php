@@ -36,6 +36,7 @@ Route::group(['middleware'=>'auth:api'],function(){
     Route::get('/users/{username}','API\UserController@show');
 // where to store the method and what should be method name
     Route::get('/users/{username}/articles','API\UserController@articles');
+    Route::patch('/users/password/change','API\UserController@changePassword');
     //Route::get('/users/{user}/articles' ,'API\UserController@');
 
 
